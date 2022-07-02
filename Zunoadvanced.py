@@ -86,7 +86,7 @@ def process_text(query):
 
 
 def open_application(query):
-    if "age" in query:
+    if "edge" and "microsoft edge" in query:
         speak("Microsoft Edge")
         os.startfile("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")
         return
@@ -106,6 +106,15 @@ def open_application(query):
         os.startfile("C:\\Program Files\\etBrains\\PyCharm\\bin\\pycharm64.exe")
         return
 
+    elif "spotify" in query:
+        speak("Opening Spotify")
+        os.startfile("C:\\Users\\mange\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Spotify.lnk")
+
+    elif "telegram" in query:
+        speak("Opening Telegram")
+        os.startfile('''C:\\Users\\mange\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Telegram
+                     Desktop\\Telegram.lnk''')
+
 
 if __name__ == "__main__":
     wishMe()
@@ -123,16 +132,23 @@ if __name__ == "__main__":
             print(results)
             speak(results)
 
-        elif 'open youtube' in query:
+        elif 'youtube' in query:
+            speak("Opening YouTube")
             webbrowser.open("youtube.com")
 
-        elif 'open google' in query:
+        elif 'google' in query:
+            speak("Opening Google")
             webbrowser.open("google.com")
 
-        elif 'open stackoverflow' in query:
+        elif 'stackoverflow' in query:
+            speak("Opening StackOverflow")
             webbrowser.open("stackoverflow.com")
 
-        elif 'play music' in query:
+        elif 'udemy' in query:
+            speak("Opening Udemy")
+            webbrowser.open("udemy.com")
+
+        elif 'music' in query:
             music_dir = 'C:\\Users\\mange\\Music'
             songs = os.listdir(music_dir)
             print(songs)
@@ -140,16 +156,44 @@ if __name__ == "__main__":
 
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
+            print(strTime)
             speak(f"Sir, the time is {strTime}")
 
         elif 'joke' in query:
-            speak(pyjokes.get_joke())
+            joke = pyjokes.get_joke()
+            print(joke)
+            speak(joke)
 
-        elif 'search' in query or 'play' in query:
-
-            query = query.replace("search", ",")
-            query = query.replace("play", ",")
+        elif 'search' in query:
+            query = query.replace('search', ',')
             webbrowser.open(query)
+
+        elif "write a note" in query:
+            speak("What should i write, sir")
+            note = takeCommand()
+            file = open('zuno.txt', 'w')
+            speak("Sir, Should i include date and time")
+            snfm = takeCommand()
+            if 'yes' in snfm or 'sure' in snfm:
+                strTime = datetime.datetime.now().strftime("%H:%M:%S")
+                file.write(strTime)
+                file.write(" :- ")
+                file.write(note)
+            else:
+                file.write(note)
+
+        elif "show note" in query:
+            speak("Showing Notes")
+            file = open("zuno.txt", "r")
+            print(file.read())
+            speak(file.read(6))
+
+        elif "where is" in query:
+            query = query.replace("where is", "")
+            location = query
+            speak("User asked to Locate")
+            speak(location)
+            webbrowser.open("https://www.google.nl/maps/place/" + location + "")
 
         process_text(query)
         open_application(query)
